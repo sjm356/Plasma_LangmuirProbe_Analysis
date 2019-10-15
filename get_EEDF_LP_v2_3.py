@@ -24,6 +24,7 @@ v2.1: Changing voltage range for linear fitting to get the Te
       End Voltage = Vf + (Vp - Vf) * 3 / 2
 v2.2: Adding floating potential data to analyzed data
 v2.3: Adding else route for the condition that the ion current is positive and floating potential cannot be found.
+      Manually determining the range of ion current
       
 v3.0(expected): Connecting EEPF data between SG data and BW data at similar data point. low energy -> SG, high energy -> BW
       
@@ -122,12 +123,16 @@ else:
         
         ## Fitting and Subratcting Ion current
             # Defining fitting range
+        '''
         V_ion_1 = -1 * min(abs(IV[:,0] - (Vf - 50))) + (Vf - 50)    #adjusting range
         V_ion_2 = -1 * min(abs(IV[:,0] - (Vf - 20))) + (Vf - 20)    #adjusting range
         V_ion_1 = round(V_ion_1, 10)
         V_ion_2 = round(V_ion_2, 10)
         id_V_ion_1 = np.where(IV == V_ion_1)
         id_V_ion_2 = np.where(IV == V_ion_2)
+        '''
+        id_V_ion_1 = np.argmin(np.abs(IV[:,0] - (- 50)))
+        id_V_ion_2 = np.argmin(np.abs(IV[:,0] - (- 20)))
             # Extracting IV range
         ion_V = IV[int(id_V_ion_1[0]):int(id_V_ion_2[0]),0]
         ion_I = IV[int(id_V_ion_1[0]):int(id_V_ion_2[0]),1]
