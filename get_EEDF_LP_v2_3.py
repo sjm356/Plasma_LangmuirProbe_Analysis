@@ -141,7 +141,8 @@ else:
             # Ion current
         I_noni = IV[:,1] - I_i
         
-        I_noni = I_noni.reshape((len(I_noni),1))
+        I_noni = I_noni.reshape((len(I_noni),1))    # reshaping means transpose of matrix
+        I_noni = I_noni.clip(min=0)
             # IV curve Subtracted ion current
         IV = np.hstack([IV, I_noni])
 
